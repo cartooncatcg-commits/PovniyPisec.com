@@ -1,2 +1,0 @@
-# PovniyPisec.com
-ZOOstoresite
