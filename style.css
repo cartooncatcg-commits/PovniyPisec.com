@@ -31,12 +31,28 @@ body {
 .banner {
   width: 100%;
   line-height: 0; /* removes small gap under inline image */
+  background-color: #00e5ff; /* cyan fills the sides on wide screens */
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .banner-img {
-  width: 100%;
+  width: auto;
+  max-width: 1100px; /* keeps banner centered with cyan showing on the sides */
   height: auto;
   display: block;
+}
+
+/* On phones: banner fills the full width and covers only the top half of the screen */
+@media (max-width: 768px) {
+  .banner-img {
+    width: 100%;
+    max-width: none;
+    height: 50vh;
+    object-fit: cover;
+    object-position: center;
+  }
 }
 
 .content {
