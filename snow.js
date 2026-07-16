@@ -27,16 +27,61 @@ function randomFlake() {
 }
 
 const flakes = Array.from({ length: FLAKE_COUNT }, randomFlake);
+flakes.forEach(f => (f.rotation = Math.random() * Math.PI * 2));
+flakes.forEach(f => (f.rotSpeed = (Math.random() - 0.5) * 0.02));
+
+// Draws a classic 6-armed snowflake crystal, scaled by `size`
+function drawSnowflake(x, y, size, rotation) {
+  const armLength = size * 4; // overall arm length
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(rotation);
+
+  ctx.strokeStyle = '#00e5ff';
+  ctx.lineWidth = Math.max(size * 0.35, 1);
+  ctx.lineCap = 'round';
+
+  for (let i = 0; i < 6; i++) {
+    ctx.save();
+    ctx.rotate((Math.PI / 3) * i);
+
+    // main arm
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(0, armLength);
+    ctx.stroke();
+
+    // two small side branches near the tip
+    const branchY = armLength * 0.55;
+    const branchLen = armLength * 0.35;
+    ctx.beginPath();
+    ctx.moveTo(0, branchY);
+    ctx.lineTo(branchLen * 0.7, branchY + branchLen * 0.7);
+    ctx.moveTo(0, branchY);
+    ctx.lineTo(-branchLen * 0.7, branchY + branchLen * 0.7);
+    ctx.stroke();
+
+    const branchY2 = armLength * 0.8;
+    const branchLen2 = armLength * 0.25;
+    ctx.beginPath();
+    ctx.moveTo(0, branchY2);
+    ctx.lineTo(branchLen2 * 0.7, branchY2 + branchLen2 * 0.7);
+    ctx.moveTo(0, branchY2);
+    ctx.lineTo(-branchLen2 * 0.7, branchY2 + branchLen2 * 0.7);
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  ctx.restore();
+}
 
 function draw() {
   ctx.clearRect(0, 0, width, height);
-  ctx.fillStyle = '#00e5ff'; // cyan
+  ctx.globalAlpha = 0.85;
 
   for (const flake of flakes) {
-    ctx.beginPath();
-    ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
-    ctx.globalAlpha = 0.8;
-    ctx.fill();
+    drawSnowflake(flake.x, flake.y, flake.radius, flake.rotation);
   }
   ctx.globalAlpha = 1;
 }
@@ -45,6 +90,7 @@ function update() {
   for (const flake of flakes) {
     flake.y += flake.speed;
     flake.x += Math.sin(flake.y * 0.01 + flake.swayOffset) * flake.drift * 0.3;
+    flake.rotation += flake.rotSpeed;
 
     // reset once it falls off the bottom
     if (flake.y > height) {
