@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>My Site</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Falling snowflakes live on this canvas, behind everything else -->
+  <canvas id="snow-canvas"></canvas>
+
+  <!-- Banner -->
+  <header class="banner">
+    <img src="banner.jpg" alt="Site banner" class="banner-img">
+  </header>
+
+  <!-- Open/Closed status, based on Kyiv time -->
+  <div class="status-wrap">
+    <span id="status-text" class="status-text">...</span>
+  </div>
+
+  <script src="snow.js"></script>
+  <script src="status.js"></script>
+</body>
+</html>
